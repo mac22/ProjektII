@@ -9,8 +9,8 @@ Zależności:
 
 Sposób użycia:
 -----------
-python3 main.py
-gnuplot -p print.plt
+    python3 main.py 
+    gnuplot -p print.plt
 
 Konfiguracja:
 ----------
