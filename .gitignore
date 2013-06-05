@@ -2,3 +2,5 @@ projekt/__pycache__/
 projekt/*.dat
 projekt/*.plt
 projekt/*.pyc
+projekt/*.png
+.*.swp

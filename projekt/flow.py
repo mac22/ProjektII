@@ -8,6 +8,17 @@ class Flow:
     self.chains = []
     self.wHist = { 0 : self.wStart}
 
+  def updateParams(self, dataDict):
+    if dataDict.has_key(self.name):
+      for i in range(len(dataDict[self.name])):
+        val = dataDict[self.name][i][0]
+        if val == 'tp':
+          self.tp = float(dataDict[self.name][i][1])
+        if val == 'wstart':
+          self.wStart = float(dataDict[self.name][i][1])
+
+      self.wHist = { 0 : self.wStart}
+
   def R(self, t):
     if t < 0:
       return 0
