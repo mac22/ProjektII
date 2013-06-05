@@ -1,39 +1,40 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from chain import Chain
 from flow import Flow
 from data_writer import Data_writer
 from math import ceil, log
 from config_container import Config_container
+from graph_painter import Graph_painter
 import configparser
 
-CHAINS = []
-
 def main():
-  cc = Config_container()
   dw = Data_writer()
-  load(cc)
-  prepare(cc)
-  t = 0
-  cc.simT = 1000
+  cc = load()
   dw.reset(cc.filename)
+  chains = prepare(cc)
+  t = 0
   while t < cc.simT:
-    updateConnectionsWindows(t)
-    updateLenghtOfQueues(t)
-    saveData(t, dw, cc)
+    updateConnectionsWindows(chains, t)
+    updateLenghtOfQueues(chains, t)
+    saveData(chains, cc, t, dw)
     t = round(t + cc.h, cc.roundDegree)
+  gp = Graph_painter()
+  gp.paint(chains, cc.graphFilename)
   dw.writePlotFile(cc.filename, cc.plotFilename)
 
-def load(cc):
+def load():
+  cc = Config_container()
   cp = configparser.ConfigParser()
   cp.readfp(open('config.ini'))
-  try:
+  try :
     cc.n = cp.getint('General', 'flows')
     cc.k = cp.getint('General', 'chains')
     cc.simT = cp.getint('General', 'simulation_time')
     cc.h = cp.getfloat('General', 'step')
     cc.filename = cp.get('General', 'data_filename')
     cc.plotFilename = cp.get('General', 'plot_filename')
+    cc.graphFilename = cp.get('General', 'graph_filename')
 
     Chain.tMin = cp.getfloat('Chains', 'tMin')
     Chain.tMax = cp.getfloat('Chains', 'tMax')
@@ -55,31 +56,35 @@ def load(cc):
     quit()
 
   cc.mod = 1/cc.h
-  cc.roundDegree = ceil(log(cc.mod, 10))
+  cc.roundDegree = int(ceil(log(cc.mod, 10)))
   Chain.h = Flow.h = cc.h
   Chain.mod = Flow.mod = cc.mod
   Chain.roundDegree = Flow.roundDegree = cc.roundDegree
+  return cc
 
 def prepare(cc):
+  chains = []
   for i in range(cc.k):
-    CHAINS.append(Chain())
-    for j in range(cc.n):
-      flow = Flow()
-      flow.chains.append(CHAINS[i])
-      CHAINS[i].flows.append(flow)
+    chains.append(Chain(i))
+  for j in range(cc.n):
+    flow = Flow(j)
+    for chain in chains:
+      flow.chains.append(chains[i])
+      chain.flows.append(flow)
+  return chains
 
-def updateConnectionsWindows(t):
-  for chain in CHAINS:
+def updateConnectionsWindows(chains, t):
+  for chain in chains:
     for flow in chain.flows:
       flow.e_dW(t)
 
-def updateLenghtOfQueues(t):
-  for chain in CHAINS:
+def updateLenghtOfQueues(chains, t):
+  for chain in chains:
     chain.e_dQ(t)
 
-def saveData(t, dw, cc):
+def saveData(chains, cc, t, dw):
   i = 0
-  for chain in CHAINS:
+  for chain in chains:
     dw.collect('q' + str(i), chain.qHist.get(t))
     x = chain.x(t)
     dw.collect('x' + str(i), x)

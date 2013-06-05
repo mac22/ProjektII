@@ -1,9 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from math import floor
 
 class Flow:
-  def __init__(self):
+  def __init__(self, number):
+    self.name = 'Flow' + str(number)
     self.chains = []
     self.wHist = { 0 : self.wStart}
 

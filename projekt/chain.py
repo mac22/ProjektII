@@ -1,8 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
 class Chain:
-  def __init__(self):
+  def __init__(self, number):
+    self.name = 'Chain' + str(number)
     self.qHist = { 0 : self.qStart }
     self.flows = []
     self.xHist = { }
@@ -27,7 +28,7 @@ class Chain:
       self.qHist[th] = 0
     elif result > self.qmax:
       self.qHist[th] = self.qmax
-    else:
+    else :
       self.qHist[th] = result 
     return self.qHist[th]
 
@@ -46,6 +47,6 @@ class Chain:
       return (x - self.tMin)/(self.tMax - self.tMin) * self.pMax
     elif self.tMax < x <= self.b:
       return 1
-    else:
+    else :
       raise Exception('Niepoprawna wartosc x:', x)
 
