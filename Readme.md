@@ -12,9 +12,9 @@ Zależności:
 
 Sposób użycia:
 -----------
-python main.py
-gnuplot -p print.plt
-open plot.png
+    python main.py 
+    gnuplot -p print.plt
+    open plot.png
 
 Konfiguracja:
 ----------
