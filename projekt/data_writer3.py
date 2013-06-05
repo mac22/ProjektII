@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 class Data_writer:
@@ -17,28 +17,29 @@ class Data_writer:
   def writePlotFile(self, filename = None, plot_filename = None):
     if plot_filename:
       f = open(plot_filename, 'w')
-      f.write('plot ')
+      print('plot', end=' ', file=f)
       corder = len(self.order)
       for i in range(corder):
         if corder - 1 == i:
-          f.write('"' + filename + '" using ' + str(i+1) + ' title \'' + self.order[i] + '\' with lines\n')
+          print('"' + filename + '" using ' + str(i+1) + ' title \'' + self.order[i] + '\' with lines', end='\n', file=f)
         else :
-          f.write('"' + filename + '" using ' + str(i+1) + ' title \'' + self.order[i] + '\' with lines, \\\n')
+          print('"' + filename + '" using ' + str(i+1) + ' title \'' + self.order[i] + '\' with lines, \\', end='\n', file=f)
       f.close()
   
   def write(self, filename = None):
     if filename:
       f = open(filename, 'a')
       for i in self.order:
-        f.write(str(self.dictionary[i]) + ' ')
-      f.write('\n')
+        print(str(self.dictionary[i]), end=' ', file=f)
+      print('', file=f)
       f.close()
 
     else :
       for i in self.order:
-        print str(i) + ': ' + str(self.dictionary[i])
+        print(str(i) + ': ' + str(self.dictionary[i]))
 
   def reset(self, filename):
     if filename:
       f = open(filename, 'w')
+      print('', end='', file=f)
       f.close()

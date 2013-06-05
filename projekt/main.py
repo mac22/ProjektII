@@ -1,85 +1,53 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from chain import Chain
 from flow import Flow
 from data_writer import Data_writer
-from math import ceil, log
-from config_container import Config_container
-import configparser
-
-CHAINS = []
+from graph_painter import Graph_painter
+from config_reader import Config_reader
 
 def main():
-  cc = Config_container()
   dw = Data_writer()
-  load(cc)
-  prepare(cc)
-  t = 0
-  cc.simT = 1000
+  cr = Config_reader()
+  cc = cr.read()
   dw.reset(cc.filename)
+  chains = prepare(cc)
+  t = 0
   while t < cc.simT:
-    updateConnectionsWindows(t)
-    updateLenghtOfQueues(t)
-    saveData(t, dw, cc)
+    updateConnectionsWindows(chains, t)
+    updateLenghtOfQueues(chains, t)
+    saveData(chains, cc, t, dw)
     t = round(t + cc.h, cc.roundDegree)
+  gp = Graph_painter()
+  gp.paint(chains, cc.graphFilename)
   dw.writePlotFile(cc.filename, cc.plotFilename)
 
-def load(cc):
-  cp = configparser.ConfigParser()
-  cp.readfp(open('config.ini'))
-  try:
-    cc.n = cp.getint('General', 'flows')
-    cc.k = cp.getint('General', 'chains')
-    cc.simT = cp.getint('General', 'simulation_time')
-    cc.h = cp.getfloat('General', 'step')
-    cc.filename = cp.get('General', 'data_filename')
-    cc.plotFilename = cp.get('General', 'plot_filename')
-
-    Chain.tMin = cp.getfloat('Chains', 'tMin')
-    Chain.tMax = cp.getfloat('Chains', 'tMax')
-    Chain.pMax = cp.getfloat('Chains', 'pMax')
-    Chain.qStart = cp.getfloat('Chains', 'q')
-    Chain.alfa = cp.getfloat('Chains', 'alfa')
-    Chain.b = cp.getfloat('Chains', 'b')
-    Chain.c = cp.getfloat('Chains', 'c')
-    Chain.qmax = cp.getfloat('Chains', 'qmax')
-
-    Flow.tp = cp.getfloat('Flows', 'tp')
-    Flow.wStart = cp.getfloat('Flows', 'w')
-
-  except configparser.NoOptionError as ex:
-    print('Błąd konfiguracji! W sekcji', ex.args[1], 'brakuje parametru', ex.args[0])
-    quit()
-  except configparser.NoSectionError as ex:
-    print('Błąd konfiguracji! Brakuje sekcji', ex.args[0])
-    quit()
-
-  cc.mod = 1/cc.h
-  cc.roundDegree = ceil(log(cc.mod, 10))
-  Chain.h = Flow.h = cc.h
-  Chain.mod = Flow.mod = cc.mod
-  Chain.roundDegree = Flow.roundDegree = cc.roundDegree
-
 def prepare(cc):
+  chains = []
   for i in range(cc.k):
-    CHAINS.append(Chain())
-    for j in range(cc.n):
-      flow = Flow()
-      flow.chains.append(CHAINS[i])
-      CHAINS[i].flows.append(flow)
+    chain = Chain(i)
+    chain.updateParams(cc.data)
+    chains.append(chain)
+  for j in range(cc.n):
+    flow = Flow(j)
+    flow.updateParams(cc.data)
+    for chain in chains:
+      flow.chains.append(chains[i])
+      chain.flows.append(flow)
+  return chains
 
-def updateConnectionsWindows(t):
-  for chain in CHAINS:
+def updateConnectionsWindows(chains, t):
+  for chain in chains:
     for flow in chain.flows:
       flow.e_dW(t)
 
-def updateLenghtOfQueues(t):
-  for chain in CHAINS:
+def updateLenghtOfQueues(chains, t):
+  for chain in chains:
     chain.e_dQ(t)
 
-def saveData(t, dw, cc):
+def saveData(chains, cc, t, dw):
   i = 0
-  for chain in CHAINS:
+  for chain in chains:
     dw.collect('q' + str(i), chain.qHist.get(t))
     x = chain.x(t)
     dw.collect('x' + str(i), x)

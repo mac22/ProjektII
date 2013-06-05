@@ -1,11 +1,23 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from math import floor
 
 class Flow:
-  def __init__(self):
+  def __init__(self, number):
+    self.name = 'Flow' + str(number)
     self.chains = []
     self.wHist = { 0 : self.wStart}
+
+  def updateParams(self, dataDict):
+    if dataDict.has_key(self.name):
+      for i in range(len(dataDict[self.name])):
+        val = dataDict[self.name][i][0]
+        if val == 'tp':
+          self.tp = float(dataDict[self.name][i][1])
+        if val == 'wstart':
+          self.wStart = float(dataDict[self.name][i][1])
+
+      self.wHist = { 0 : self.wStart}
 
   def R(self, t):
     if t < 0:

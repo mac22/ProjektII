@@ -1,11 +1,35 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
 class Chain:
-  def __init__(self):
+  def __init__(self, number):
+    self.name = 'Chain' + str(number)
     self.qHist = { 0 : self.qStart }
     self.flows = []
     self.xHist = { }
+
+  def updateParams(self, dataDict):
+    if dataDict.has_key(self.name):
+      for i in range(len(dataDict[self.name])):
+        val = dataDict[self.name][i][0]
+        if val == 'tmin':
+          self.tMin = float(dataDict[self.name][i][1])
+        elif val == 'tmax':
+          self.tMax = float(dataDict[self.name][i][1])
+        elif val == 'pmax':
+          self.pMax = float(dataDict[self.name][i][1])
+        elif val == 'qstart':
+          self.qStart = float(dataDict[self.name][i][1])
+        elif val == 'alfa':
+          self.alfa = float(dataDict[self.name][i][1])
+        elif val == 'b':
+          self.b = float(dataDict[self.name][i][1])
+        elif val == 'c':
+          self.c = float(dataDict[self.name][i][1])
+        elif val == 'qmax':
+          self.qMax = float(dataDict[self.name][i][1])
+
+      self.qHist = { 0 : self.qStart }
 
   def q(self, t):
     if t < 0:
@@ -25,9 +49,9 @@ class Chain:
     result = self.q(t) + self.h * f(t)
     if 0 > result:
       self.qHist[th] = 0
-    elif result > self.qmax:
-      self.qHist[th] = self.qmax
-    else:
+    elif result > self.qMax:
+      self.qHist[th] = self.qMax
+    else :
       self.qHist[th] = result 
     return self.qHist[th]
 
@@ -46,6 +70,6 @@ class Chain:
       return (x - self.tMin)/(self.tMax - self.tMin) * self.pMax
     elif self.tMax < x <= self.b:
       return 1
-    else:
+    else :
       raise Exception('Niepoprawna wartosc x:', x)
 
