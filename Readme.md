@@ -22,6 +22,6 @@ Wszystkie aktualne zmienne można ustawić w pliku config.ini
 
 TODO:
 --------
-- przetestować czy sam model funkcjonuje zgodnie z założeniami (pod względem obliczeń jak i zależności między węzłami i łańcuchami)
-- zaimplementować możliwość konfiguracji dla każdego węzła i przepływu z osobna
+- przetestować czy modelowanie odbywa się poprawnie
+- ustalić sposób łączenia węzłow (czy mają łączyć się każdy z przepływów z każdym węzłem, czy może ma być to konfigurowalne)
 - ???
