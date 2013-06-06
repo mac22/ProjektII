@@ -23,5 +23,5 @@ Wszystkie aktualne zmienne można ustawić w pliku config.ini
 TODO:
 --------
 - przetestować czy modelowanie odbywa się poprawnie
-- ustalić sposób łączenia węzłow (czy mają łączyć się każdy z przepływów z każdym węzłem, czy może ma być to konfigurowalne)
+- poprawić krok całkowania tak by mógł być większy niż 1
 - ???

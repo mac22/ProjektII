@@ -11,30 +11,33 @@ def main():
   cr = Config_reader()
   cc = cr.read()
   dw.reset(cc.filename)
-  chains = prepare(cc)
+  (chains, flows) = prepare(cc)
   t = 0
   while t < cc.simT:
     updateConnectionsWindows(chains, t)
     updateLenghtOfQueues(chains, t)
-    saveData(chains, cc, t, dw)
+    saveData(chains, flows, cc, t, dw)
     t = round(t + cc.h, cc.roundDegree)
   gp = Graph_painter()
   gp.paint(chains, cc.graphFilename)
   dw.writePlotFile(cc.filename, cc.plotFilename)
 
 def prepare(cc):
-  chains = []
+  chains = set()
   for i in range(cc.k):
     chain = Chain(i)
     chain.updateParams(cc.data)
-    chains.append(chain)
+    chains.add(chain)
   for j in range(cc.n):
     flow = Flow(j)
     flow.updateParams(cc.data)
-    for chain in chains:
-      flow.chains.append(chains[i])
-      chain.flows.append(flow)
-  return chains
+    flow.connectWithChain(chains)
+  flows = set()
+  for chain in chains:
+    for flow in chain.flows:
+      flows.add(flow)
+    
+  return (chains, flows)
 
 def updateConnectionsWindows(chains, t):
   for chain in chains:
@@ -45,20 +48,22 @@ def updateLenghtOfQueues(chains, t):
   for chain in chains:
     chain.e_dQ(t)
 
-def saveData(chains, cc, t, dw):
-  i = 0
+def saveData(chains, flows, cc, t, dw):
   for chain in chains:
-    dw.collect('q' + str(i), chain.qHist.get(t))
+    if 'q' in chain.printVal:
+      dw.collect(chain.name + ' q', chain.qHist.get(t))
     x = chain.x(t)
-    dw.collect('x' + str(i), x)
-    dw.collect('p' + str(i), chain.p(x))
-    i = i + 1
-  i = 0
-  for flow in chain.flows:
-    #dw.collect('t' + str(i), flow.W(t)/flow.R(t))
-    dw.collect('w' + str(i), flow.W(t))
-    #dw.collect('r' + str(i), flow.R(t))
-    i = i + 1
+    if 'x' in chain.printVal:
+      dw.collect(chain.name + ' x', x)
+    if 'p' in chain.printVal:
+      dw.collect(chain.name + ' p', chain.p(x))
+  for flow in flows:
+    if 't' in flow.printVal:
+      dw.collect(flow.name + ' t', flow.W(t)/flow.R(t))
+    if 'w' in flow.printVal:
+      dw.collect(flow.name + ' w', flow.W(t))
+    if 'r' in flow.printVal:
+      dw.collect(flow.name + ' r', flow.R(t))
   dw.write(cc.filename)
 
 if __name__ == '__main__':
