@@ -32,9 +32,8 @@ class Flow:
       rit = self.R(t)
       trit = round((t - rit) * self.mod)/self.mod
       writ = self.W(trit)
-      #print(t, writ)
       if writ and w:
-        ci = 0
+        ci = 1
         for chain in self.chains:
           ci *= chain.p(chain.x(trit))
         if (1 - ci):
