@@ -31,9 +31,7 @@ def prepare(cc):
   for j in range(cc.n):
     flow = Flow(j)
     flow.updateParams(cc.data)
-    for chain in chains:
-      flow.chains.append(chains[i])
-      chain.flows.append(flow)
+    flow.connectWithChain(chains)
   return chains
 
 def updateConnectionsWindows(chains, t):
@@ -46,19 +44,15 @@ def updateLenghtOfQueues(chains, t):
     chain.e_dQ(t)
 
 def saveData(chains, cc, t, dw):
-  i = 0
   for chain in chains:
-    dw.collect('q' + str(i), chain.qHist.get(t))
+    dw.collect(chain.name + ' q', chain.qHist.get(t))
     x = chain.x(t)
-    dw.collect('x' + str(i), x)
-    dw.collect('p' + str(i), chain.p(x))
-    i = i + 1
-  i = 0
+    dw.collect(chain.name + ' x', x)
+    dw.collect(chain.name + ' p', chain.p(x))
   for flow in chain.flows:
-    #dw.collect('t' + str(i), flow.W(t)/flow.R(t))
-    dw.collect('w' + str(i), flow.W(t))
-    #dw.collect('r' + str(i), flow.R(t))
-    i = i + 1
+    #dw.collect(flow.name + ' t', flow.W(t)/flow.R(t))
+    dw.collect(flow.name + ' w', flow.W(t))
+    #dw.collect(flow.name + ' r', flow.R(t))
   dw.write(cc.filename)
 
 if __name__ == '__main__':

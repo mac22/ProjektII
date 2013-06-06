@@ -16,8 +16,21 @@ class Flow:
           self.tp = float(dataDict[self.name][i][1])
         if val == 'wstart':
           self.wStart = float(dataDict[self.name][i][1])
+        if val == 'chain':
+          curData = dataDict[self.name][i][1].split(',')
+          self.chainStart = []
+          for chain in curData:
+            self.chainStart.append(chain.strip().capitalize())
 
       self.wHist = { 0 : self.wStart}
+
+  def connectWithChain(self, chains):
+    for chainName in self.chainStart:
+      for chain in chains:
+        if chain.name == chainName:
+          self.chains.append(chain)
+          chain.flows.append(self)
+          break
 
   def R(self, t):
     if t < 0:

@@ -32,6 +32,11 @@ class Config_reader:
 
       Flow.tp = self.cp.getfloat('Flows', 'tp')
       Flow.wStart = self.cp.getfloat('Flows', 'w')
+      curChainData = self.cp.get('Flows', 'chain')
+      curChainData = curChainData.split(',')
+      Flow.chainStart = []
+      for chain in curChainData:
+        Flow.chainStart.append(chain.strip().capitalize())
 
     except configparser.NoOptionError as ex:
       print('Błąd konfiguracji! W sekcji', ex.args[1], 'brakuje parametru', ex.args[0])
