@@ -28,6 +28,11 @@ class Chain:
           self.c = float(dataDict[self.name][i][1])
         elif val == 'qmax':
           self.qMax = float(dataDict[self.name][i][1])
+        elif val == 'print':
+          curData = dataDict[self.name][i][1].split(',')
+          self.printVal = set()
+          for data in curData:
+            self.printVal.add(data.strip())
 
       self.qHist = { 0 : self.qStart }
 

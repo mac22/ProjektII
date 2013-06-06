@@ -30,13 +30,26 @@ class Config_reader:
       Chain.c = self.cp.getfloat('Chains', 'c')
       Chain.qMax = self.cp.getfloat('Chains', 'qMax')
 
+      curData = self.cp.get('Chains', 'print')
+      curData = curData.split(',')
+      Chain.printVal = set()
+      for data in curData:
+        Chain.printVal.add(data.strip())
+
       Flow.tp = self.cp.getfloat('Flows', 'tp')
       Flow.wStart = self.cp.getfloat('Flows', 'w')
-      curChainData = self.cp.get('Flows', 'chain')
-      curChainData = curChainData.split(',')
+
+      curData = self.cp.get('Flows', 'chain')
+      curData = curData.split(',')
       Flow.chainStart = []
-      for chain in curChainData:
-        Flow.chainStart.append(chain.strip().capitalize())
+      for data in curData:
+        Flow.chainStart.append(data.strip().capitalize())
+
+      curData = self.cp.get('Flows', 'print')
+      curData = curData.split(',')
+      Flow.printVal = set()
+      for data in curData:
+        Flow.printVal.add(data.strip())
 
     except configparser.NoOptionError as ex:
       print('Błąd konfiguracji! W sekcji', ex.args[1], 'brakuje parametru', ex.args[0])

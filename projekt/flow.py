@@ -14,13 +14,18 @@ class Flow:
         val = dataDict[self.name][i][0]
         if val == 'tp':
           self.tp = float(dataDict[self.name][i][1])
-        if val == 'wstart':
+        elif val == 'wstart':
           self.wStart = float(dataDict[self.name][i][1])
-        if val == 'chain':
+        elif val == 'chain':
           curData = dataDict[self.name][i][1].split(',')
           self.chainStart = []
-          for chain in curData:
-            self.chainStart.append(chain.strip().capitalize())
+          for data in curData:
+            self.chainStart.append(data.strip().capitalize())
+        elif val == 'print':
+          curData = dataDict[self.name][i][1].split(',')
+          self.printVal = set()
+          for data in curData:
+            self.printVal.add(data.strip())
 
       self.wHist = { 0 : self.wStart}
 
