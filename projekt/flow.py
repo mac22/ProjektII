@@ -5,7 +5,7 @@ from math import floor
 class Flow:
   def __init__(self, number):
     self.name = 'Flow' + str(number)
-    self.chains = []
+    self.nodes = []
     self.wHist = { 0 : self.wStart}
 
   def updateParams(self, dataDict):
@@ -16,11 +16,11 @@ class Flow:
           self.tp = float(dataDict[self.name][i][1])
         elif val == 'wstart':
           self.wStart = float(dataDict[self.name][i][1])
-        elif val == 'chain':
+        elif val == 'node':
           curData = dataDict[self.name][i][1].split(',')
-          self.chainStart = []
+          self.nodeStart = []
           for data in curData:
-            self.chainStart.append(data.strip().capitalize())
+            self.nodeStart.append(data.strip().capitalize())
         elif val == 'print':
           curData = dataDict[self.name][i][1].split(',')
           self.printVal = set()
@@ -29,20 +29,20 @@ class Flow:
 
       self.wHist = { 0 : self.wStart}
 
-  def connectWithChain(self, chains):
-    for chainName in self.chainStart:
-      for chain in chains:
-        if chain.name == chainName:
-          self.chains.append(chain)
-          chain.flows.append(self)
+  def connectWithNode(self, nodes):
+    for nodeName in self.nodeStart:
+      for node in nodes:
+        if node.name == nodeName:
+          self.nodes.append(node)
+          node.flows.append(self)
           break
 
   def R(self, t):
     if t < 0:
       return 0
     ci = 0
-    for chain in self.chains:
-      ci += chain.q(t)/chain.c
+    for node in self.nodes:
+      ci += node.q(t)/node.c
     return ci + self.tp
 
   def e_dW(self, t):
@@ -52,10 +52,10 @@ class Flow:
       writ = self.W(trit)
       if writ and w:
         ci = 1
-        for chain in self.chains:
-          ci *= chain.p(chain.x(trit))
-        if (1 - ci):
-          return 1/rit - w/2. * writ/self.R(trit) * (1 - ci)
+        for node in self.nodes:
+          ci *= 1 - node.p(node.x(trit))
+        if ci:
+          return 1/rit - w/2. * writ/self.R(trit) * ci
       return 1/rit 
 
     if t < 0:

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 from config_container import Config_container
 import configparser
-from chain import Chain
+from node import Node
 from flow import Flow
 from math import ceil, log
 
@@ -14,36 +14,36 @@ class Config_reader:
     self.cp.readfp(open('config.ini'))
     try :
       self.cc.n = self.cp.getint('General', 'flows')
-      self.cc.k = self.cp.getint('General', 'chains')
+      self.cc.k = self.cp.getint('General', 'nodes')
       self.cc.simT = self.cp.getint('General', 'simulation_time')
       self.cc.h = self.cp.getfloat('General', 'step')
       self.cc.filename = self.cp.get('General', 'data_filename')
       self.cc.plotFilename = self.cp.get('General', 'plot_filename')
       self.cc.graphFilename = self.cp.get('General', 'graph_filename')
 
-      Chain.tMin = self.cp.getfloat('Chains', 'tMin')
-      Chain.tMax = self.cp.getfloat('Chains', 'tMax')
-      Chain.pMax = self.cp.getfloat('Chains', 'pMax')
-      Chain.qStart = self.cp.getfloat('Chains', 'q')
-      Chain.alfa = self.cp.getfloat('Chains', 'alfa')
-      Chain.b = self.cp.getfloat('Chains', 'b')
-      Chain.c = self.cp.getfloat('Chains', 'c')
-      Chain.qMax = self.cp.getfloat('Chains', 'qMax')
+      Node.tMin = self.cp.getfloat('Nodes', 'tMin')
+      Node.tMax = self.cp.getfloat('Nodes', 'tMax')
+      Node.pMax = self.cp.getfloat('Nodes', 'pMax')
+      Node.qStart = self.cp.getfloat('Nodes', 'q')
+      Node.alfa = self.cp.getfloat('Nodes', 'alfa')
+      Node.b = self.cp.getfloat('Nodes', 'b')
+      Node.c = self.cp.getfloat('Nodes', 'c')
+      Node.qMax = self.cp.getfloat('Nodes', 'qMax')
 
-      curData = self.cp.get('Chains', 'print')
+      curData = self.cp.get('Nodes', 'print')
       curData = curData.split(',')
-      Chain.printVal = set()
+      Node.printVal = set()
       for data in curData:
-        Chain.printVal.add(data.strip())
+        Node.printVal.add(data.strip())
 
       Flow.tp = self.cp.getfloat('Flows', 'tp')
       Flow.wStart = self.cp.getfloat('Flows', 'w')
 
-      curData = self.cp.get('Flows', 'chain')
+      curData = self.cp.get('Flows', 'node')
       curData = curData.split(',')
-      Flow.chainStart = []
+      Flow.nodeStart = []
       for data in curData:
-        Flow.chainStart.append(data.strip().capitalize())
+        Flow.nodeStart.append(data.strip().capitalize())
 
       curData = self.cp.get('Flows', 'print')
       curData = curData.split(',')
@@ -62,14 +62,14 @@ class Config_reader:
 
     self.cc.mod = 1/self.cc.h
     self.cc.roundDegree = int(ceil(log(self.cc.mod, 10)))
-    Chain.h = Flow.h = self.cc.h
-    Chain.mod = Flow.mod = self.cc.mod
-    Chain.roundDegree = Flow.roundDegree = self.cc.roundDegree
+    Node.h = Flow.h = self.cc.h
+    Node.mod = Flow.mod = self.cc.mod
+    Node.roundDegree = Flow.roundDegree = self.cc.roundDegree
     return self.cc
 
   def readOtherSections(self):
     for i in range(self.cc.k):
-      name = 'Chain' + str(i)
+      name = 'Node' + str(i)
       if self.cp.has_section(name):
         self.cc.data[name] = self.cp.items(name)
 
