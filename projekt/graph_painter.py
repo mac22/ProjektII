@@ -4,11 +4,11 @@ import pydot
 
 class Graph_painter:
 
-  def paint(self, chains, filename):
+  def paint(self, nodes, filename):
     graph = pydot.Dot(graph_type='graph')
-    for chain in chains:
-      for flow in chain.flows:
-        edge = pydot.Edge(chain.name, flow.name)
+    for node in nodes:
+      for flow in node.flows:
+        edge = pydot.Edge(node.name, flow.name)
         graph.add_edge(edge)
     graph.write_png(filename)
 
