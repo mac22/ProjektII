@@ -35,7 +35,6 @@ class Flow:
         if node.name == nodeName:
           self.nodes.append(node)
           node.flows.append(self)
-          break
 
   def R(self, t):
     if t < 0:
@@ -53,9 +52,9 @@ class Flow:
       if writ and w:
         ci = 1
         for node in self.nodes:
-          ci *= 1 - node.p(node.x(trit))
+          ci *= node.p(node.x(trit))
         if ci:
-          return 1/rit - w/2. * writ/self.R(trit) * ci
+          return 1/rit - w/2. * writ/self.R(trit) * (1 - ci)
       return 1/rit 
 
     if t < 0:
