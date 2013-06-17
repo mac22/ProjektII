@@ -1,4 +1,4 @@
-Projekt Inżynieria Internetu
+﻿Projekt Inżynieria Internetu
 ========
 
 Zależności:
@@ -25,3 +25,12 @@ TODO:
 - przetestować czy modelowanie odbywa się poprawnie
 - poprawić krok całkowania tak by mógł być większy niż 1
 - ???
+
+--------
+Dokumentacja:
+1. Temat, opis projektu
+2. Zasada działania rozwiązania
+3. Struktura aplikacji
+4. Specyfikacja zewnętrzna i wewnętrzna
+5. Analiza zachowania protokołu w topologii przedstawionej na wprowadzeniu
+6. Testowanie, podsumowanie
