@@ -52,7 +52,7 @@ class Flow:
       if writ and w:
         ci = 1
         for node in self.nodes:
-          ci *= node.p(node.x(trit))
+          ci *= ( 1 - node.p(node.x(trit)) )
         if ci:
           return 1/rit - w/2. * writ/self.R(trit) * (1 - ci)
       return 1/rit 

@@ -65,7 +65,7 @@ class Node:
     if t < 0:
       return 1
     if self.xHist.get(t) == None:
-      self.xHist[t] = self.alfa * self.q(t) + (1 - self.alfa) * self.x(t-1)
+      self.xHist[t] = self.alfa * self.q(t) + (1 - self.alfa) * self.x(t - self.h)
     return self.xHist[t]
 
   def p(self, x):
