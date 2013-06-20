@@ -48,6 +48,7 @@ def updateLenghtOfQueues(nodes, t):
     node.e_dQ(t)
 
 def saveData(nodes, flows, cc, t, dw):
+  dw.collect('step', t)
   for node in nodes:
     if 'q' in node.printVal:
       dw.collect(node.name + ' q', node.qHist.get(t))
