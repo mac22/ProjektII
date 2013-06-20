@@ -12,13 +12,13 @@ class Node:
     if dataDict.has_key(self.name):
       for i in range(len(dataDict[self.name])):
         val = dataDict[self.name][i][0]
-        if val == 'tmin':
+        if val == 'tMin':
           self.tMin = float(dataDict[self.name][i][1])
-        elif val == 'tmax':
+        elif val == 'tMax':
           self.tMax = float(dataDict[self.name][i][1])
-        elif val == 'pmax':
+        elif val == 'pMax':
           self.pMax = float(dataDict[self.name][i][1])
-        elif val == 'qstart':
+        elif val == 'q':
           self.qStart = float(dataDict[self.name][i][1])
         elif val == 'alfa':
           self.alfa = float(dataDict[self.name][i][1])
@@ -26,7 +26,7 @@ class Node:
           self.b = float(dataDict[self.name][i][1])
         elif val == 'c':
           self.c = float(dataDict[self.name][i][1])
-        elif val == 'qmax':
+        elif val == 'qMax':
           self.qMax = float(dataDict[self.name][i][1])
         elif val == 'print':
           curData = dataDict[self.name][i][1].split(',')

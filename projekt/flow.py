@@ -14,7 +14,7 @@ class Flow:
         val = dataDict[self.name][i][0]
         if val == 'tp':
           self.tp = float(dataDict[self.name][i][1])
-        elif val == 'wstart':
+        elif val == 'w':
           self.wStart = float(dataDict[self.name][i][1])
         elif val == 'node':
           curData = dataDict[self.name][i][1].split(',')
