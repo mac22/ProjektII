@@ -51,7 +51,7 @@ def saveData(nodes, flows, cc, t, dw):
   dw.collect('step', t)
   for node in nodes:
     if 'q' in node.printVal:
-      dw.collect(node.name + ' q', node.qHist.get(t))
+      dw.collect(node.name + ' q', node.q(t))
     x = node.x(t)
     if 'x' in node.printVal:
       dw.collect(node.name + ' x', x)

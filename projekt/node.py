@@ -37,8 +37,9 @@ class Node:
       self.qHist = { 0 : self.qStart }
 
   def q(self, t):
+    t = round(t, self.roundDegree)
     if t < 0:
-      return self.q
+      return self.qStart
     elif self.qHist.get(t) == None:
       raise Exception('Wartosc Q dla t: ', t, ' nie istnieje')
     return self.qHist[t] 
@@ -58,12 +59,12 @@ class Node:
       self.qHist[th] = self.qMax
     else :
       self.qHist[th] = result 
-    return self.qHist[th]
+    return self.q(th)
 
   def x(self, t):
     t = round(t, self.roundDegree)
     if t < 0:
-      return 1
+      return self.qStart
     if self.xHist.get(t) == None:
       self.xHist[t] = self.alfa * self.q(t) + (1 - self.alfa) * self.x(t - self.h)
     return self.xHist[t]
