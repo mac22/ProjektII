@@ -65,7 +65,7 @@ class Flow:
     return self.wHist[th]
 
   def W(self, t):
-    if t <= 0:
+    if t < 0:
       return 0
     elif self.wHist.get(t) == None:
       raise Exception('Wartosc W dla t: ', t, ' nie istnieje')
