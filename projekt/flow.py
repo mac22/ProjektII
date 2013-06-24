@@ -38,7 +38,7 @@ class Flow:
 
   def R(self, t):
     if t < 0:
-      t = 0
+      return 0
     ci = 0
     for node in self.nodes:
       ci += node.q(t)/node.c
@@ -52,21 +52,21 @@ class Flow:
       if writ and w:
         ci = 1
         for node in self.nodes:
-          ci *= ( 1 - node.p(node.x(trit)) )
-        return 1/rit - w/2. * writ/self.R(trit) * (1 - ci)
+          ci *= 1 - node.p(node.x(trit))
+        if ci:
+          return 1/rit - w/2. * writ/self.R(trit) * (1 - ci)
       return 1/rit 
 
     if t < 0:
-      return self.wStart
+      return 0
     wit = self.W(t)
     th = round(t + self.h, self.roundDegree)
     self.wHist[th] = wit + self.h * f(t, wit)
-    return self.W(th)
+    return self.wHist[th]
 
   def W(self, t):
-    t = round(t, self.roundDegree)
     if t <= 0:
-      return self.wStart
+      return 0
     elif self.wHist.get(t) == None:
       raise Exception('Wartosc W dla t: ', t, ' nie istnieje')
     return self.wHist[t]

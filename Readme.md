@@ -28,9 +28,9 @@ TODO:
 
 --------
 Dokumentacja:
-1. Temat, opis projektu
-2. Zasada działania rozwiązania
-3. Struktura aplikacji
-4. Specyfikacja zewnętrzna i wewnętrzna
-5. Analiza zachowania protokołu w topologii przedstawionej na wprowadzeniu
-6. Testowanie, podsumowanie
+1.  Temat, opis projektu
+2.  Zasada działania rozwiązania
+3.  Struktura aplikacji
+4.  Specyfikacja zewnętrzna i wewnętrzna
+5.  Analiza zachowania protokołu w topologii przedstawionej na wprowadzeniu
+6.  Testowanie, podsumowanie

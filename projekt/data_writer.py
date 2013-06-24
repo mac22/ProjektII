@@ -20,7 +20,7 @@ class Data_writer:
       f.write('plot ')
       corder = len(self.order)
       for i in range(corder):
-        if not ( 0 == i ):
+        if  0 != i:
           if corder - 1 == i:
             f.write('"' + filename + '" using 1:' + str(i+1) + ' title \'' + self.order[i] + '\' with lines\n')
           else :
