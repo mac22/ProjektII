@@ -26,8 +26,10 @@ TODO:
 - poprawić krok całkowania tak by mógł być większy niż 1
 - ???
 
---------
+
 Dokumentacja:
+--------
+
 1.  Temat, opis projektu
 2.  Zasada działania rozwiązania
 3.  Struktura aplikacji
